@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Photo;
 use Illuminate\Http\Request;
 
 use App\Http\Requests\FlyerRequest;
 use App\Flyer;
 use App\Http\Controllers\Controller;
 //use Requests;
+
 
 class FlyersController extends Controller
 {
@@ -93,5 +95,17 @@ class FlyersController extends Controller
 	public function destroy($id)
 	{
 		//
+	}
+
+	public function addPhoto($zip, $street,Request $request){
+
+		$this->validate($request, [
+			'photo' => 'required|mimes:jpg,jpeg,png,bmp'
+		]);
+
+		$photo = Photo::fromForm($request->file('photo'));
+
+		Flyer::locatedAt($zip, $street)->addPhoto($photo);
+
 	}
 }

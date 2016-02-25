@@ -5,6 +5,7 @@
     <title>Project Flyer</title>
     <link rel="stylesheet" href="/css/app.css">
     <link rel="stylesheet" href="/css/libs.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/dropzone.css">
 </head>
 <body>
 
@@ -60,6 +61,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 @include('flash')
+
+@yield('footer')
 
 
 </body>
