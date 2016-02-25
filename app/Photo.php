@@ -2,8 +2,10 @@
 
 namespace App;
 
+use Intervention\Image\Facades\Image as Image;
 use Illuminate\Database\Eloquent\Model;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+
 
 class Photo extends Model
 {
@@ -12,7 +14,7 @@ class Photo extends Model
 
 	protected $fillable = ['path'];
 
-	protected $baseDir = 'flyer/photos/';
+	protected $baseDir = 'flyer/photos';
 
 	/**
 	 * A belongs to a flyer
@@ -25,16 +27,31 @@ class Photo extends Model
 		return $this->belongsTo('App\Flyer');
 	}
 
-	public static function fromForm(UploadedFile $file){
+	public static function named($name){
 
-		$photo = new static;
+		return (new static)->saveAs($name);
+	}
 
-		$name = time() . $file->getClientOriginalName();
+	public function saveAs($name){
 
-		$photo->path = $photo->baseDir . $name;
+		$this->name = sprintf("%s-%s", time(), $name);
+		$this->path = sprintf("%s/%s", $this->baseDir, $this->name);
+		$this->thumbnail_path = sprintf("%s/tn-%s", $this->baseDir, $this->name);
 
-		$file->move($photo->baseDir, $name);
+		return $this;
+	}
 
-		return $photo;
+	public function move(UploadedFile $file){
+
+		$file->move($this->baseDir, $this->name);
+
+		$this->makeThumbnail();
+
+		return $this;
+	}
+
+	protected function makeThumbnail(){
+
+		Image::make($this->path)->fit(200)->save($this->thumbnail_path);
 	}
 }
