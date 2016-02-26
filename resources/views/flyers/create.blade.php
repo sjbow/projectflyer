@@ -5,7 +5,7 @@
     <h1>Selling your home?</h1>
 
     <div class="row">
-        <form method="post" action="/flyers" enctype="multipart/form-data" class="col-md-6">
+        <form method="post" action="/flyers" enctype="multipart/form-data" class="col-md-12">
             @include('flyers.form')
 
             @if(count($errors) > 0)
